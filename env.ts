@@ -51,3 +51,16 @@ try {
 const isDev = () => env.APP_STAGE === 'dev'
 const isTest = () => env.APP_STAGE === 'test'
 const isProd = () => env.APP_STAGE === 'production'
+
+/* 
+
+Steps to clone a random repo from github and push it to your own repo on github: 
+, keeping it still open to pull from original clone repo 
+If you also want to keep pulling updates from the original repo later, rename the old remote instead of overwriting it:
+
+git remote rename origin upstream
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git push -u origin main
+
+Now origin is your repo (for pushing) and upstream is the original (for pulling updates with git pull upstream main). 
+*/
