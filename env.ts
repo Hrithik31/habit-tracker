@@ -25,8 +25,8 @@ const envSchema = z.object({
 
   PORT: z.coerce.number().positive().default(3000),
 
-  DATABASE_URL: z.string().startsWith('postgresql://'), //https and file are not theonly protocols for postrgress have their own url as postgresql://
-  JWT_SECRET: z.string().min(32, 'Must be 32 chars long'), // JWT secret should be at least 32 chars long for security reasons
+  //   DATABASE_URL: z.string().startsWith('postgresql://'), //https and file are not theonly protocols for postrgress have their own url as postgresql://
+  //   JWT_SECRET: z.string().min(32, 'Must be 32 chars long'), // JWT secret should be at least 32 chars long for security reasons
   JWT_EXPIRES_IN: z.string().default('3d'), // JWT expires in 3 days by default
   BCRYPT_ROUNDS: z.coerce.number().min(10).max(20).default(12), // bcrypt rounds should be between 10 and 20, default is 12 // Has to do something with hashing the password, the more rounds the more secure but also the more time it takes to hash the password
 })
@@ -41,13 +41,17 @@ try {
     console.error('>>Invalid environment variables:', error)
     console.log(JSON.stringify(z.flattenError(error).fieldErrors, null, 2))
 
-    error.errors.forEach((err) => {
+    error.issues.forEach((err) => {
       const path = err.path.join('.')
       console.log(`${path}: ${err.message}`)
     })
     process.exit(1) // kill the server if env variables are not valid, because the server should not run if env variables are not valid
   }
+  throw error
 }
 const isDev = () => env.APP_STAGE === 'dev'
 const isTest = () => env.APP_STAGE === 'test'
 const isProd = () => env.APP_STAGE === 'production'
+
+export { env }
+export default env
